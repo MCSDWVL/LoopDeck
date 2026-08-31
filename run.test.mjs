@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRun, availableNodes, selectNode, resolveVictory, chooseReward, buyCard } from './run.js';
-import { MUSIC_CONFIG, soundtrackForSeed, chordForBeat, allocateChordVoices } from './cards.js';
+import { createRun, availableNodes, selectNode, resolveVictory, chooseReward, skipReward, buyCard, rollOfferDefinition, rewardOffers } from './run.js';
+import { MUSIC_CONFIG, soundtrackForSeed, chordForBeat, allocateChordVoices, OFFER_CONFIG } from './cards.js';
 
 test('a striker run begins with a deliberately connectable strike and defend chain', () => {
   const run = createRun('striker', 42);
@@ -13,12 +13,35 @@ test('a striker run begins with a deliberately connectable strike and defend cha
   assert.equal(run.hp, 60);
   assert.equal(run.gold, 0);
   assert.equal(run.soundtrack, soundtrackForSeed(42).id);
+  assert.equal(Number.isInteger(run.progression), true);
+  assert.equal(run.collection.every(card => card.degree >= 0 && card.degree < 5), true);
   assert.equal(availableNodes(run).length, 3);
 });
 
 test('soundtracks are deterministic per run and provide dark modal pitch data', () => {
   assert.equal(createRun('striker', 10).soundtrack, createRun('striker', 10).soundtrack);
-  assert.equal(Object.values(MUSIC_CONFIG.soundtracks).every(preset => preset.scale.length === 7 && preset.progression.length === 4 && preset.tonicHz < 60), true);
+  assert.equal(Object.values(MUSIC_CONFIG.soundtracks).every(preset => preset.scale.length === 7 && preset.pentatonic.length === 5 && preset.progression.length === 4 && preset.tonicHz < 60), true);
+});
+
+test('offer class and rarity are rolled independently of the card pool', () => {
+  const roll=(...values)=>()=>values.shift() ?? 0;
+  assert.equal(rollOfferDefinition('striker',roll(0,.9,0)).id,'signal-link');
+  assert.equal(rollOfferDefinition('striker',roll(0,0)).id,'pulse-source');
+  assert.equal(rollOfferDefinition('striker',roll(.9,0,0)).offerRarity,'common');
+  assert.equal(rollOfferDefinition('striker',roll(.9,.56,0)).offerRarity,'uncommon');
+  assert.equal(rollOfferDefinition('striker',roll(.9,.9,0)).offerRarity,'rare');
+  assert.deepEqual(OFFER_CONFIG.actionRarities,[['common',.55],['uncommon',.32],['rare',.13]]);
+});
+
+test('generated reward connectors regularly include distinct multi-output routes', () => {
+  let connectors=0,multiOutput=0;
+  for(let seed=0;seed<1000;seed++) for(const card of rewardOffers(createRun('striker',seed),3)) if(card.action.connector){
+    connectors++;
+    if(card.out.length>1)multiOutput++;
+    assert.equal(new Set(card.out).size,card.out.length);
+  }
+  assert.ok(connectors>800);
+  assert.ok(multiOutput>400);
 });
 
 test('soundtrack chords only contain consonant simultaneous intervals', () => {
@@ -29,11 +52,34 @@ test('soundtrack chords only contain consonant simultaneous intervals', () => {
   assert.equal(chordForBeat(MUSIC_CONFIG.soundtracks.phrygian,5).transitionAccent,true);
 });
 
-test('chord voicing de-duplicates notes and limits a busy beat to three voices', () => {
+test('pentatonic voicing de-duplicates notes and permits five voices', () => {
   const preset=MUSIC_CONFIG.soundtracks.aeolian;
   const voices=allocateChordVoices(preset,1,[{degree:0},{degree:0},{degree:1},{degree:2},{degree:3},{degree:4}]);
-  assert.equal(voices.length,3);
-  assert.deepEqual(voices.map(voice=>voice.semitones),[0,3,7]);
+  assert.equal(voices.length,5);
+  assert.deepEqual(voices.map(voice=>voice.semitones),[0,3,5,7,10]);
+});
+
+test('generated card degrees and progression variants are deterministic per run', () => {
+  const first=createRun('striker',42), replay=createRun('striker',42), other=createRun('striker',43);
+  assert.deepEqual(first.collection.map(card=>card.degree),replay.collection.map(card=>card.degree));
+  assert.equal(first.progression,replay.progression);
+  assert.ok(new Set(first.collection.map(card=>card.degree)).size>1);
+  assert.equal(other.collection.every(card=>card.degree>=0&&card.degree<5),true);
+  assert.ok(new Set(Array.from({length:20},(_,seed)=>createRun('striker',seed).collection[0].degree)).size>1);
+});
+
+test('progression variants alter the chord sequence without reshuffling a run', () => {
+  const preset=MUSIC_CONFIG.soundtracks.aeolian;
+  assert.equal(chordForBeat(preset,1,0).root,0);
+  assert.equal(chordForBeat(preset,9,0).root,8);
+  assert.equal(chordForBeat(preset,9,1).root,5);
+});
+
+test('pentatonic palettes omit semitone and tritone intervals', () => {
+  for(const preset of Object.values(MUSIC_CONFIG.soundtracks)){
+    const intervals=preset.pentatonic.flatMap((tone,index)=>preset.pentatonic.slice(index+1).map(other=>other-tone));
+    assert.equal(intervals.every(interval=>![1,6,11].includes(interval)),true);
+  }
 });
 
 test('victory awards gold and one selected reward card', () => {
@@ -44,6 +90,19 @@ test('victory awards gold and one selected reward card', () => {
   assert.equal(run.offers.length, run.selectedNode.kind === 'miniboss' ? 5 : 3);
   run = chooseReward(run, run.offers[0].id);
   assert.equal(run.collection.length, 4);
+  assert.equal(run.phase, 'map');
+});
+
+test('skipping a reward grants 10 gold without adding a card', () => {
+  let run = createRun('venom', 7);
+  run = selectNode(run, availableNodes(run)[0].id);
+  run = resolveVictory(run);
+  const collectionSize = run.collection.length;
+  const gold = run.gold;
+  run = skipReward(run);
+  assert.equal(run.gold, gold + 10);
+  assert.equal(run.collection.length, collectionSize);
+  assert.equal(run.offers.length, 0);
   assert.equal(run.phase, 'map');
 });
 

@@ -1,4 +1,5 @@
-import { ARCHETYPES, emptyBoard, makeEncounter } from './game.js';
+import { ARCHETYPES, emptyBoard, makeEncounter, makeCard } from './game.js';
+import { cardById, soundtrackForSeed } from './cards.js';
 
 const LANES = 3;
 const specialByRow = ['shop', 'campfire', 'miniboss', 'fight'];
@@ -9,13 +10,9 @@ const cardFrom = (archetype, seed, id) => {
   return structuredClone({ ...source, id: `card-${id}`, action: { ...source.action, id: `card-${id}-action` } });
 };
 export function createRun(archetype, seed = Math.floor(Math.random() * 0xffffffff)) {
-  const dealt = makeEncounter(seed, archetype).tiles;
-  const activator = dealt.find(card => card.type === 'activator');
-  const actions = ARCHETYPES[archetype].actions;
-  const starterActions = archetype === 'bulwark' ? [actions[0], actions[2], actions[3]] : archetype === 'venom' ? [actions[0], actions[1], actions[3]] : [actions[0], actions[1], actions[3]];
-  const starterShapes = [activator, ...dealt.filter(card => card.type === 'relay').slice(0, 2)];
-  const collection = starterShapes.map((card, index) => structuredClone({ ...card, turns:0, id:`starter-${index}`, action:{id:`starter-${index}-action`,name:starterActions[index][0],value:starterActions[index][1],text:starterActions[index][2],kind:archetype} }));
-  return { seed, archetype, hp:60, maxHp:60, gold:0, wins:0, battleNumber:1, collection, board:emptyBoard(), map:makeMap(seed, 0, 4), position:{row:-1,lane:1}, phase:'map', selectedNode:null, offers:[], status:'active' };
+  const starterIds = ['pulse-source','strike','defend'];
+  const collection = starterIds.map((id, index) => makeCard(cardById(id), () => 0, `starter-${index}`));
+  return { seed, soundtrack:soundtrackForSeed(seed).id, archetype:'striker', hp:60, maxHp:60, gold:0, wins:0, battleNumber:1, collection, board:emptyBoard(), map:makeMap(seed, 0, 4), position:{row:-1,lane:1}, phase:'map', selectedNode:null, offers:[], status:'active' };
 }
 export function makeMap(seed, startRow, count) { return Array.from({length:count},(_,offset)=>{const row=startRow+offset, special=specialByRow[row%4];return Array.from({length:LANES},(_,lane)=>({id:`${row}-${lane}`,row,lane,kind:lane===hash(seed,row)%LANES?special:'fight',visited:false}))}) }
 export function availableNodes(run) { const next=run.position.row+1, row=run.map.find(r=>r[0].row===next)||[];return row.filter(node=>run.position.row<0||Math.abs(node.lane-run.position.lane)<=1) }
@@ -25,7 +22,7 @@ export function rewardOffers(run,count){return Array.from({length:count},(_,i)=>
 export function resolveVictory(run){const next=structuredClone(run),mini=next.selectedNode.kind==='miniboss';next.gold+=mini?20:10;next.wins++;next.offers=rewardOffers(next,mini?5:3);next.phase='reward';return next}
 export function chooseReward(run, cardId){const card=run.offers.find(x=>x.id===cardId);if(!card)return run;const next=structuredClone(run);next.collection.push(card);next.offers=[];next.selectedNode=null;next.battleNumber++;next.phase='map';return next}
 export function shopOffers(run){return Array.from({length:3},(_,i)=>cardFrom(run.archetype,hash(run.seed,run.position.row*151+i),`${run.position.row}-shop-${i}`))}
-export function buyCard(run,cardId){const card=run.offers.find(x=>x.id===cardId);if(!card||run.gold<25)return run;const next=structuredClone(run);next.gold-=25;next.collection.push(card);next.offers=next.offers.filter(x=>x.id!==cardId);return next}
+export function buyCard(run,cardId){const card=run.offers.find(x=>x.id===cardId);if(!card||run.gold<card.shopCost)return run;const next=structuredClone(run);next.gold-=card.shopCost;next.collection.push(card);next.offers=next.offers.filter(x=>x.id!==cardId);return next}
 export function leaveShop(run){const next=structuredClone(run);next.offers=[];next.selectedNode=null;next.phase='map';return next}
 export function leaveCampfire(run){const next=structuredClone(run);next.selectedNode=null;next.phase='map';return next}
 export const archetypeName = id => ARCHETYPES[id].name;

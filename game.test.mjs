@@ -1,89 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TILES, emptyBoard, reachableSocket, poweredNodes, createBattle, advance, makeEncounter } from './game.js';
+import {TILES,emptyBoard,reachableSocket,poweredNodes,createBattle,advance,makeEncounter,makeCard} from './game.js';
+import {catalogFor,cardById} from './cards.js';
 
-const tile = (type, action) => ({ ...TILES[type], type, id: type, action });
+const action=(name,effects=[],extra={})=>({name,text:name,effects,...extra});
+const damage=(base,from)=>({type:'damage',target:'enemy',value:{base,from}});
+const block=base=>({type:'block',target:'self',value:{base}});
+const tile=(type,card)=>({...TILES[type],type,params:{},id:type,action:card});
+const quiet=battle=>{battle.enemy.board=emptyBoard();return battle};
 
-test('an activator route reaches a socketed action', () => {
-  const board = emptyBoard();
-  board[0] = tile('activator');
-  board[1] = tile('relay', { name: 'Strike', value: 6, kind: 'striker' });
-  assert.equal(reachableSocket(board), true);
-});
-
-test('activator resolves on beat one and sends its pulse next beat', () => {
-  const board = emptyBoard();
-  board[0] = tile('activator', { name: 'Strike', value: 6, kind: 'striker' });
-  board[1] = tile('relay', { name: 'Guard', value: 7, kind: 'bulwark' });
-  let battle = createBattle(board, 'striker');
-  battle.enemy.board = emptyBoard();
-  battle = advance(battle);
-  assert.equal(battle.enemy.hp, 114);
-  battle = advance(battle);
-  assert.equal(battle.player.block, 7);
-});
-
-test('block absorbs damage and poison ticks every third beat', () => {
-  const board = emptyBoard();
-  let battle = createBattle(board, 'striker');
-  battle.enemy.board = emptyBoard();
-  battle.player.block = 2;
-  battle.player.poison = 5;
-  battle = advance(advance(battle));
-  battle = advance(battle);
-  assert.equal(battle.player.hp, 117);
-  assert.equal(battle.player.block, 0);
-});
-
-test('tile deals strongly favor a mix of straight and corner relays', () => {
-  const types = makeEncounter(123).tiles.map(tile => tile.type);
-  assert.equal(types.filter(type => type === 'relay' || type === 'relayTurn').length, 8);
-  assert.equal(types.filter(type => type === 'relayTurn').length, 4);
-  assert.equal(types.filter(type => type.startsWith('multi')).length, 1);
-  assert.equal(types.filter(type => type === 'activator').length, 1);
-  assert.equal(types.filter(type => type === 'delay').length, 1);
-  assert.equal(types.filter(type => type === 'accumulator').length, 1);
-});
-
-test('a completed battle keeps its pulse simulation running without changing stats', () => {
-  const board = emptyBoard();
-  board[0] = tile('activator', { name: 'Strike', value: 6, kind: 'striker' });
-  let battle = createBattle(board, 'striker');
-  battle.over = true;
-  battle.result = 'Victory';
-  const hp = battle.player.hp;
-  battle = advance(battle);
-  assert.equal(battle.player.hp, hp);
-  assert.deepEqual(battle.player.activeNodes, [0]);
-});
-
-test('a partial multi hit reports the received fraction for rendering', () => {
-  const board = emptyBoard();
-  board[0] = tile('activator');
-  board[1] = tile('multi2');
-  let battle = createBattle(board, 'striker');
-  battle.enemy.board = emptyBoard();
-  battle = advance(advance(battle));
-  assert.equal(battle.player.partialNodes[1], 0.5);
-});
-
-test('a delay retains its scheduled release beat for countdown feedback', () => {
-  const board = emptyBoard();
-  board[0] = tile('activator');
-  board[1] = tile('delay');
-  let battle = createBattle(board, 'striker');
-  battle.enemy.board = emptyBoard();
-  battle = advance(advance(battle));
-  assert.equal(battle.player.delays[1], 4);
-  battle = advance(battle);
-  assert.equal(battle.player.delays[1] - battle.beat, 1);
-});
-
-test('reachability dims a multi node without all required reachable inputs', () => {
-  const board = emptyBoard();
-  board[0] = tile('activator');
-  board[1] = tile('multi2');
-  const powered = poweredNodes(board);
-  assert.equal(powered.has(0), true);
-  assert.equal(powered.has(1), false);
-});
+test('an activator route reaches a socketed action',()=>{const board=emptyBoard();board[0]=tile('activator');board[1]=tile('relay',action('Strike',[damage(6)]));assert.equal(reachableSocket(board),true)});
+test('a connector-only board is not battle-ready',()=>{const board=emptyBoard();board[0]=tile('activator',{name:'',text:'',connector:true});assert.equal(reachableSocket(board),false)});
+test('declarative actions resolve and a pulse arrives next beat',()=>{const board=emptyBoard();board[0]=tile('activator',action('Strike',[damage(6)]));board[1]=tile('relay',action('Defend',[block(7)]));let battle=quiet(createBattle(board));battle=advance(battle);assert.equal(battle.enemy.hp,114);battle=advance(battle);assert.equal(battle.player.block,7)});
+test('timed statuses apply flat modifiers and decay after resolution',()=>{const board=emptyBoard();board[0]=tile('activator',action('Hit',[damage(5)]));let battle=quiet(createBattle(board));battle.player.statuses.strong=3;battle.enemy.statuses.vulnerable=2;battle=advance(battle);assert.equal(battle.enemy.hp,110);assert.equal(battle.player.statuses.strong,2);assert.equal(battle.enemy.statuses.vulnerable,1)});
+test('poison deals every beat then loses one stack',()=>{let battle=quiet(createBattle(emptyBoard()));battle.player.statuses.poison=3;battle=advance(battle);assert.equal(battle.player.hp,117);assert.equal(battle.player.statuses.poison,2)});
+test('stun skips the effect but forwards the pulse',()=>{const board=emptyBoard();board[0]=tile('activator');board[1]=tile('relay',action('Strike',[damage(9)]));board[2]=tile('relay',action('Defend',[block(4)]));let battle=quiet(createBattle(board));battle.player.statuses.stunned=2;battle=advance(advance(battle));assert.equal(battle.enemy.hp,120);assert.equal(battle.player.incoming[2].count,1)});
+test('pulse age survives delays and is available to effects',()=>{const board=emptyBoard();board[0]=tile('activator');board[1]=tile('delay');board[1].params.beats=2;board[2]=tile('relay',action('Aged',[damage(0,'pulseAge')]));let battle=quiet(createBattle(board));for(let i=0;i<5;i++)battle=advance(battle);assert.equal(battle.enemy.hp,116)});
+test('merged pulses retain the younger age',()=>{const board=emptyBoard();board[0]=tile('activator');board[1]=tile('relay');board[2]=tile('relay',action('Age',[damage(0,'pulseAge')]));let battle=quiet(createBattle(board));battle.player.incoming[2]={count:1,generatedBeat:0};battle=advance(battle);assert.equal(battle.enemy.hp,119)});
+test('activation count and time since trigger are readable',()=>{const board=emptyBoard();board[0]=tile('activator',action('Grow',[damage(1,'activationCount')]));let battle=quiet(createBattle(board));battle=advance(battle);for(let i=0;i<4;i++)battle=advance(battle);assert.equal(battle.enemy.hp,115)});
+test('cooldown executes its negative effect while continuing the route',()=>{const board=emptyBoard();board[0]=tile('activator',action('Risk',[block(8)],{rules:{cooldown:5,onCooldown:[{type:'damage',target:'self',value:{base:3}}]}}));let battle=quiet(createBattle(board));battle=advance(battle);for(let i=0;i<4;i++)battle=advance(battle);assert.equal(battle.player.block,5);assert.match(battle.events.join(' '),/misfires/)});
+test('exhaust leaves a relay after its allowed activation',()=>{const board=emptyBoard();board[0]=tile('activator',action('Once',[damage(5)],{rules:{exhaust:1}}));board[1]=tile('relay',action('Defend',[block(4)]));let battle=quiet(createBattle(board));battle=advance(battle);for(let i=0;i<4;i++)battle=advance(battle);assert.equal(battle.enemy.hp,115);assert.equal(battle.player.incoming[1].count,1);assert.equal(battle.player.nodeState[0].exhausted,true)});
+test('glass removes the whole node when its break roll fails',()=>{const board=emptyBoard();board[0]=tile('activator',action('Glass',[damage(25)],{modifiers:{glass:{chance:1,multiplier:5}}}));let battle=quiet(createBattle(board));battle=advance(battle);assert.equal(battle.player.board[0],null);assert.equal(battle.enemy.hp,120)});
+test('switchers rotate their selected outgoing route',()=>{const board=emptyBoard();board[0]=tile('activator');board[1]=tile('switcher');board[1].out=['E','S'];board[2]=tile('relay',action('East',[block(1)]));board[6]={...tile('relay',action('South',[block(10)])),in:['N'],out:['E']};let battle=quiet(createBattle(board));for(let i=0;i<7;i++)battle=advance(battle);assert.equal(battle.player.block,11);assert.equal(battle.player.nodeState[1].switchIndex,0)});
+test('board reads and reactive damage triggers are available to authored effects',()=>{const board=emptyBoard();board[0]=tile('activator',action('Read',[damage(1,'connectedNeighbors')]));board[1]=tile('relay',action('Reactive',[],{reactive:[{trigger:'damageTaken',type:'block',target:'self',value:{base:2}}]}));let battle=createBattle(board);battle.enemy.board=emptyBoard();battle.enemy.board[0]=tile('activator',action('Enemy hit',[damage(3)]));battle=advance(battle);assert.equal(battle.enemy.hp,118);assert.equal(battle.player.block,2)});
+test('catalog cards preserve declarative effects and enemy-only poison cards',()=>{const tiles=makeEncounter(123,'striker').tiles;assert.equal(tiles.every(tile=>tile.definitionId&&tile.tier&&Number.isInteger(tile.degree)),true);assert.equal(tiles.filter(tile=>tile.action.name).every(tile=>Array.isArray(tile.action.effects)),true);assert.equal(catalogFor('enemy-venom').some(tile=>tile.action?.name==='Venom'),true)});
+test('pulse sources are exceptionally rare and normally have no incoming port',()=>{const source=cardById('pulse-source');assert.equal(source.rewardWeight,.08);assert.equal(source.params.incomingChance,.1);const generated=makeEncounter(42,'striker').tiles.filter(tile=>tile.definitionId==='pulse-source');assert.ok(generated.length<=1);const isolated=makeCard(source,()=>.9,'isolated');assert.deepEqual(isolated.in,[]);const loopable=makeCard(source,()=>0,'loopable');assert.equal(loopable.in.length,1)});
+test('reachability dims a multi node without all required reachable inputs',()=>{const board=emptyBoard();board[0]=tile('activator');board[1]=tile('multi2');assert.equal(poweredNodes(board).has(1),false)});

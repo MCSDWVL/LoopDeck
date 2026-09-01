@@ -1,0 +1,1405 @@
+{
+  "configHash": "2691822d",
+  "policyVersion": "simple-forecast-v1",
+  "milestones": {
+    "4": {
+      "survivalRate": 0.17,
+      "medianHp": 19,
+      "p25Hp": 12
+    },
+    "8": {
+      "survivalRate": 0,
+      "medianHp": 0,
+      "p25Hp": 0
+    },
+    "12": {
+      "survivalRate": 0,
+      "medianHp": 0,
+      "p25Hp": 0
+    }
+  },
+  "clearRate": 0,
+  "meanWins": 3.24,
+  "meanHpLostPerBattle": 14.351415094339623,
+  "stallRate": 0.007075471698113208,
+  "cards": [
+    {
+      "definitionId": "glass-defend",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4166666666666667,
+      "stallRate": 0.041666666666666664,
+      "meanWinDelta": 0.08333333333333333,
+      "winDelta95CI": [
+        -0.029622132218660335,
+        0.196288798885327
+      ],
+      "meanDamageDelta": 1.2083333333333333,
+      "damageDelta95CI": [
+        -1.1600000000000004,
+        3.576666666666667
+      ],
+      "meanHpDelta": 5.833333333333333,
+      "hpDelta95CI": [
+        0.8801246431505332,
+        10.786542023516134
+      ],
+      "name": "Glass Defend",
+      "tier": "strong",
+      "node": "relay"
+    },
+    {
+      "definitionId": "glass-strike",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0.08333333333333333,
+      "winDelta95CI": [
+        -0.029622132218660335,
+        0.196288798885327
+      ],
+      "meanDamageDelta": 4.125,
+      "damageDelta95CI": [
+        -0.3926730655876627,
+        8.642673065587662
+      ],
+      "meanHpDelta": 3.25,
+      "hpDelta95CI": [
+        0.35472423780904183,
+        6.145275762190958
+      ],
+      "name": "Glass Strike",
+      "tier": "strong",
+      "node": "relay"
+    },
+    {
+      "definitionId": "reckless-charge",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0.08333333333333333,
+      "winDelta95CI": [
+        -0.029622132218660335,
+        0.196288798885327
+      ],
+      "meanDamageDelta": 3.125,
+      "damageDelta95CI": [
+        -0.28069285763994145,
+        6.5306928576399415
+      ],
+      "meanHpDelta": 3.0416666666666665,
+      "hpDelta95CI": [
+        1.2274131504082477,
+        4.855920182925085
+      ],
+      "name": "Reckless Charge",
+      "tier": "strong",
+      "node": "relayTurn"
+    },
+    {
+      "definitionId": "late-guard",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0.041666666666666664,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000004,
+        0.12333333333333338
+      ],
+      "meanDamageDelta": 1.2083333333333333,
+      "damageDelta95CI": [
+        -1.1600000000000004,
+        3.576666666666667
+      ],
+      "meanHpDelta": 2.5,
+      "hpDelta95CI": [
+        -1.5595452019132408,
+        6.559545201913241
+      ],
+      "name": "Late Guard",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "no-surrender",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0.041666666666666664,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000004,
+        0.12333333333333338
+      ],
+      "meanDamageDelta": 0.5416666666666666,
+      "damageDelta95CI": [
+        -0.5199999999999997,
+        1.603333333333333
+      ],
+      "meanHpDelta": 2.375,
+      "hpDelta95CI": [
+        -1.548216524556186,
+        6.298216524556186
+      ],
+      "name": "No Surrender",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "executioner",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 1.5416666666666667,
+      "damageDelta95CI": [
+        -0.8875921565038258,
+        3.9709254898371595
+      ],
+      "meanHpDelta": 1.625,
+      "hpDelta95CI": [
+        -0.2322190719350854,
+        3.482219071935085
+      ],
+      "name": "Executioner",
+      "tier": "strong",
+      "node": "delay"
+    },
+    {
+      "definitionId": "alternating-guard",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 0.041666666666666664,
+      "damageDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanHpDelta": 1.3333333333333333,
+      "hpDelta95CI": [
+        -0.9472382536345096,
+        3.6139049203011764
+      ],
+      "name": "Alternating Guard",
+      "tier": "mid",
+      "node": "switcher"
+    },
+    {
+      "definitionId": "iron-wave",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 1.4583333333333333,
+      "damageDelta95CI": [
+        -0.9246473591348885,
+        3.8413140258015552
+      ],
+      "meanHpDelta": 1.2083333333333333,
+      "hpDelta95CI": [
+        -1.3520345967107195,
+        3.7687012633773858
+      ],
+      "name": "Iron Wave",
+      "tier": "low",
+      "node": "relayTurn"
+    },
+    {
+      "definitionId": "switchblade",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 0.4583333333333333,
+      "damageDelta95CI": [
+        -0.20883450365022055,
+        1.1255011703168871
+      ],
+      "meanHpDelta": 0.75,
+      "hpDelta95CI": [
+        -1.2355758847757239,
+        2.7355758847757237
+      ],
+      "name": "Switchblade",
+      "tier": "mid",
+      "node": "switcher"
+    },
+    {
+      "definitionId": "bash",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 1.375,
+      "damageDelta95CI": [
+        -0.3501150980294836,
+        3.100115098029484
+      ],
+      "meanHpDelta": 0,
+      "hpDelta95CI": [
+        -2.080567091033081,
+        2.080567091033081
+      ],
+      "name": "Bash",
+      "tier": "low",
+      "node": "relay"
+    },
+    {
+      "definitionId": "anger",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 0.75,
+      "damageDelta95CI": [
+        -0.2936231481537379,
+        1.793623148153738
+      ],
+      "meanHpDelta": -0.125,
+      "hpDelta95CI": [
+        -2.1386365725663636,
+        1.8886365725663636
+      ],
+      "name": "Anger",
+      "tier": "low",
+      "node": "relay"
+    },
+    {
+      "definitionId": "crack-armor",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 1,
+      "damageDelta95CI": [
+        -0.3084408245329049,
+        2.308440824532905
+      ],
+      "meanHpDelta": -0.75,
+      "hpDelta95CI": [
+        -2.5938212526148523,
+        1.0938212526148523
+      ],
+      "name": "Crack Armor",
+      "tier": "low",
+      "node": "relay"
+    },
+    {
+      "definitionId": "twin-strike",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 1.125,
+      "damageDelta95CI": [
+        -0.3069284908467149,
+        2.556928490846715
+      ],
+      "meanHpDelta": -1.1666666666666667,
+      "hpDelta95CI": [
+        -3.682304329415725,
+        1.348970996082392
+      ],
+      "name": "Twin Strike",
+      "tier": "low",
+      "node": "relayTurn"
+    },
+    {
+      "definitionId": "flex",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0.041666666666666664,
+      "winDelta95CI": [
+        -0.04000000000000003,
+        0.12333333333333335
+      ],
+      "meanDamageDelta": 0.08333333333333333,
+      "damageDelta95CI": [
+        -0.029622132218660335,
+        0.196288798885327
+      ],
+      "meanHpDelta": -1.8333333333333333,
+      "hpDelta95CI": [
+        -3.2474314310449772,
+        -0.4192352356216891
+      ],
+      "name": "Flex",
+      "tier": "low",
+      "node": "delay"
+    },
+    {
+      "definitionId": "stagger",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 1.5416666666666667,
+      "damageDelta95CI": [
+        -0.270667850183405,
+        3.3540011835167385
+      ],
+      "meanHpDelta": 1.0416666666666667,
+      "hpDelta95CI": [
+        -1.7339032360783804,
+        3.8172365694117136
+      ],
+      "name": "Stagger",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "intimidate",
+      "samples": 24,
+      "selectionRate": 0.4583333333333333,
+      "reachableRate": 0.4583333333333333,
+      "activationRate": 0.4166666666666667,
+      "stallRate": 0.041666666666666664,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.4166666666666667,
+      "damageDelta95CI": [
+        -0.4000000000000001,
+        1.2333333333333334
+      ],
+      "meanHpDelta": 0.9166666666666666,
+      "hpDelta95CI": [
+        -2.791520840643608,
+        4.624854173976941
+      ],
+      "name": "Intimidate",
+      "tier": "low",
+      "node": "relayTurn"
+    },
+    {
+      "definitionId": "holding-pattern",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0.041666666666666664,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 1.0833333333333333,
+      "damageDelta95CI": [
+        -1.0399999999999994,
+        3.206666666666666
+      ],
+      "meanHpDelta": 0.75,
+      "hpDelta95CI": [
+        -3.0331267261468993,
+        4.533126726146899
+      ],
+      "name": "Holding Pattern",
+      "tier": "mid",
+      "node": "delay"
+    },
+    {
+      "definitionId": "release-valve",
+      "samples": 24,
+      "selectionRate": 0.7916666666666666,
+      "reachableRate": 0.7916666666666666,
+      "activationRate": 0.7083333333333334,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.4166666666666667,
+      "damageDelta95CI": [
+        -1.2333333333333334,
+        0.4000000000000001
+      ],
+      "meanHpDelta": 0.7083333333333334,
+      "hpDelta95CI": [
+        0.3264199266014594,
+        1.0902467400652074
+      ],
+      "name": "Release Valve",
+      "tier": "strong",
+      "node": "accumulator"
+    },
+    {
+      "definitionId": "delayed-execution",
+      "samples": 24,
+      "selectionRate": 0.7916666666666666,
+      "reachableRate": 0.7916666666666666,
+      "activationRate": 0.7083333333333334,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.4166666666666667,
+      "damageDelta95CI": [
+        -1.2333333333333334,
+        0.4000000000000001
+      ],
+      "meanHpDelta": 0.5833333333333334,
+      "hpDelta95CI": [
+        0.23104132116764603,
+        0.9356253454990207
+      ],
+      "name": "Delayed Execution",
+      "tier": "strong",
+      "node": "accumulator"
+    },
+    {
+      "definitionId": "crumbling-guard",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0.041666666666666664,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.4166666666666667,
+      "damageDelta95CI": [
+        -0.4000000000000001,
+        1.2333333333333334
+      ],
+      "meanHpDelta": 0.5,
+      "hpDelta95CI": [
+        -3.348330336238249,
+        4.348330336238249
+      ],
+      "name": "Crumbling Guard",
+      "tier": "mid",
+      "node": "delay"
+    },
+    {
+      "definitionId": "strike",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.75,
+      "damageDelta95CI": [
+        -0.3264494778023117,
+        1.8264494778023117
+      ],
+      "meanHpDelta": 0.125,
+      "hpDelta95CI": [
+        -2.199835431295879,
+        2.449835431295879
+      ],
+      "name": "Strike",
+      "tier": "low",
+      "node": "relay"
+    },
+    {
+      "definitionId": "clothesline",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 1.75,
+      "damageDelta95CI": [
+        -0.7198040173378071,
+        4.2198040173378075
+      ],
+      "meanHpDelta": 0.08333333333333333,
+      "hpDelta95CI": [
+        -2.6630919233997266,
+        2.8297585900663935
+      ],
+      "name": "Clothesline",
+      "tier": "mid",
+      "node": "delay"
+    },
+    {
+      "definitionId": "finisher",
+      "samples": 24,
+      "selectionRate": 0.7916666666666666,
+      "reachableRate": 0.7916666666666666,
+      "activationRate": 0.7083333333333334,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.125,
+      "damageDelta95CI": [
+        -0.2151475596249965,
+        0.4651475596249965
+      ],
+      "meanHpDelta": 0.041666666666666664,
+      "hpDelta95CI": [
+        -0.9900800699418942,
+        1.0734134032752276
+      ],
+      "name": "Finisher",
+      "tier": "strong",
+      "node": "accumulator"
+    },
+    {
+      "definitionId": "signal-link",
+      "samples": 24,
+      "selectionRate": 0.4583333333333333,
+      "reachableRate": 0.4583333333333333,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0,
+      "damageDelta95CI": [
+        0,
+        0
+      ],
+      "meanHpDelta": 0,
+      "hpDelta95CI": [
+        0,
+        0
+      ],
+      "name": "Signal Link",
+      "tier": "connector",
+      "node": "relay"
+    },
+    {
+      "definitionId": "turn-link",
+      "samples": 24,
+      "selectionRate": 0.4583333333333333,
+      "reachableRate": 0.4583333333333333,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0,
+      "damageDelta95CI": [
+        0,
+        0
+      ],
+      "meanHpDelta": 0,
+      "hpDelta95CI": [
+        0,
+        0
+      ],
+      "name": "Turn Link",
+      "tier": "connector",
+      "node": "relayTurn"
+    },
+    {
+      "definitionId": "heavy-blade",
+      "samples": 24,
+      "selectionRate": 0.7916666666666666,
+      "reachableRate": 0.7916666666666666,
+      "activationRate": 0.7083333333333334,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.041666666666666664,
+      "hpDelta95CI": [
+        -1.0321151938623785,
+        0.9487818605290452
+      ],
+      "name": "Heavy Blade",
+      "tier": "strong",
+      "node": "accumulator"
+    },
+    {
+      "definitionId": "overguard",
+      "samples": 24,
+      "selectionRate": 0.4583333333333333,
+      "reachableRate": 0.4583333333333333,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.041666666666666664,
+      "hpDelta95CI": [
+        -0.29135608727411855,
+        0.2080227539407852
+      ],
+      "name": "Overguard",
+      "tier": "strong",
+      "node": "delay"
+    },
+    {
+      "definitionId": "patient-strike",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 1.75,
+      "damageDelta95CI": [
+        -0.5170535688549514,
+        4.017053568854951
+      ],
+      "meanHpDelta": -0.125,
+      "hpDelta95CI": [
+        -2.6617013985700497,
+        2.4117013985700497
+      ],
+      "name": "Patient Strike",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "body-slam",
+      "samples": 24,
+      "selectionRate": 0.4166666666666667,
+      "reachableRate": 0.4166666666666667,
+      "activationRate": 0.3333333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.4166666666666667,
+      "damageDelta95CI": [
+        -1.2333333333333334,
+        0.4000000000000001
+      ],
+      "meanHpDelta": -0.20833333333333334,
+      "hpDelta95CI": [
+        -0.6494385274430052,
+        0.23277186077633857
+      ],
+      "name": "Body Slam",
+      "tier": "strong",
+      "node": "accumulator"
+    },
+    {
+      "definitionId": "blood-for-blood",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 2.125,
+      "damageDelta95CI": [
+        -0.6071874365434371,
+        4.8571874365434375
+      ],
+      "meanHpDelta": -0.25,
+      "hpDelta95CI": [
+        -2.6279253532243705,
+        2.1279253532243705
+      ],
+      "name": "Blood for Blood",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "decisive-blow",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.5,
+      "hpDelta95CI": [
+        -0.9086882515518666,
+        -0.09131174844813345
+      ],
+      "name": "Decisive Blow",
+      "tier": "strong",
+      "node": "multi3"
+    },
+    {
+      "definitionId": "last-stand",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.5,
+      "hpDelta95CI": [
+        -0.9086882515518666,
+        -0.09131174844813345
+      ],
+      "name": "Last Stand",
+      "tier": "strong",
+      "node": "multi2"
+    },
+    {
+      "definitionId": "all-in",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.5416666666666666,
+      "hpDelta95CI": [
+        -0.95,
+        -0.13333333333333325
+      ],
+      "name": "All In",
+      "tier": "strong",
+      "node": "multi2"
+    },
+    {
+      "definitionId": "bell-ringer",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.5416666666666666,
+      "hpDelta95CI": [
+        -0.95,
+        -0.13333333333333325
+      ],
+      "name": "Bell Ringer",
+      "tier": "strong",
+      "node": "multi2"
+    },
+    {
+      "definitionId": "bulwark-formation",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.5416666666666666,
+      "hpDelta95CI": [
+        -0.95,
+        -0.13333333333333325
+      ],
+      "name": "Bulwark Formation",
+      "tier": "strong",
+      "node": "multi2"
+    },
+    {
+      "definitionId": "clash",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.5416666666666666,
+      "hpDelta95CI": [
+        -0.95,
+        -0.13333333333333325
+      ],
+      "name": "Clash",
+      "tier": "strong",
+      "node": "multi2"
+    },
+    {
+      "definitionId": "decapitate",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -0.5416666666666666,
+      "hpDelta95CI": [
+        -0.95,
+        -0.13333333333333325
+      ],
+      "name": "Decapitate",
+      "tier": "strong",
+      "node": "multi3"
+    },
+    {
+      "definitionId": "ancient-edge",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.9583333333333334,
+      "damageDelta95CI": [
+        -0.33124468812560537,
+        2.247911354792272
+      ],
+      "meanHpDelta": -0.75,
+      "hpDelta95CI": [
+        -3.6016806638709835,
+        2.1016806638709835
+      ],
+      "name": "Ancient Edge",
+      "tier": "mid",
+      "node": "delay"
+    },
+    {
+      "definitionId": "crescendo",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 1,
+      "damageDelta95CI": [
+        -0.40091274594070647,
+        2.4009127459407065
+      ],
+      "meanHpDelta": -0.9583333333333334,
+      "hpDelta95CI": [
+        -4.062927852043283,
+        2.1462611853766167
+      ],
+      "name": "Crescendo",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "perfected-strike",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.75,
+      "damageDelta95CI": [
+        -0.3264494778023117,
+        1.8264494778023117
+      ],
+      "meanHpDelta": -0.9583333333333334,
+      "hpDelta95CI": [
+        -4.085264021948124,
+        2.1685973552814573
+      ],
+      "name": "Perfected Strike",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "pain-response",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0,
+      "damageDelta95CI": [
+        0,
+        0
+      ],
+      "meanHpDelta": -0.9583333333333334,
+      "hpDelta95CI": [
+        -2.810549364754382,
+        0.8938826980877156
+      ],
+      "name": "Pain Response",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "flank",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.75,
+      "damageDelta95CI": [
+        -0.1581251589664423,
+        1.6581251589664423
+      ],
+      "meanHpDelta": -1,
+      "hpDelta95CI": [
+        -4.152467632492527,
+        2.152467632492528
+      ],
+      "name": "Flank",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "rupture-engine",
+      "samples": 24,
+      "selectionRate": 0.7916666666666666,
+      "reachableRate": 0.7916666666666666,
+      "activationRate": 0.16666666666666666,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.041666666666666664,
+      "damageDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanHpDelta": -1.0416666666666667,
+      "hpDelta95CI": [
+        -1.996336286024905,
+        -0.08699704730842839
+      ],
+      "name": "Rupture Engine",
+      "tier": "strong",
+      "node": "accumulator"
+    },
+    {
+      "definitionId": "isolation",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.4166666666666667,
+      "damageDelta95CI": [
+        -0.5041424188557757,
+        1.3374757521891092
+      ],
+      "meanHpDelta": -1.0833333333333333,
+      "hpDelta95CI": [
+        -4.22234260809713,
+        2.055675941430464
+      ],
+      "name": "Isolation",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "thunderclap",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.25,
+      "damageDelta95CI": [
+        -0.74,
+        0.24
+      ],
+      "meanHpDelta": -1.625,
+      "hpDelta95CI": [
+        -2.9948298053598386,
+        -0.2551701946401612
+      ],
+      "name": "Thunderclap",
+      "tier": "mid",
+      "node": "multi2"
+    },
+    {
+      "definitionId": "footwork",
+      "samples": 24,
+      "selectionRate": 0.4583333333333333,
+      "reachableRate": 0.4583333333333333,
+      "activationRate": 0.4166666666666667,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 0.4166666666666667,
+      "damageDelta95CI": [
+        -0.4000000000000001,
+        1.2333333333333334
+      ],
+      "meanHpDelta": -1.7083333333333333,
+      "hpDelta95CI": [
+        -3.271172591188638,
+        -0.1454940754780285
+      ],
+      "name": "Footwork",
+      "tier": "low",
+      "node": "relay"
+    },
+    {
+      "definitionId": "pummel",
+      "samples": 24,
+      "selectionRate": 0,
+      "reachableRate": 0,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.75,
+      "damageDelta95CI": [
+        -2.2199999999999998,
+        0.72
+      ],
+      "meanHpDelta": -1.875,
+      "hpDelta95CI": [
+        -3.2009425141101095,
+        -0.5490574858898907
+      ],
+      "name": "Pummel",
+      "tier": "mid",
+      "node": "multi2"
+    },
+    {
+      "definitionId": "echo-formation",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.16666666666666666,
+      "damageDelta95CI": [
+        -0.9097104134688553,
+        0.576377080135522
+      ],
+      "meanHpDelta": -2.2916666666666665,
+      "hpDelta95CI": [
+        -4.931001759886078,
+        0.3476684265527443
+      ],
+      "name": "Echo Formation",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "reprisal",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.5,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": 1.875,
+      "damageDelta95CI": [
+        -0.6341164938500055,
+        4.384116493850005
+      ],
+      "meanHpDelta": -2.5,
+      "hpDelta95CI": [
+        -5.556066430721934,
+        0.5560664307219345
+      ],
+      "name": "Reprisal",
+      "tier": "mid",
+      "node": "relayTurn"
+    },
+    {
+      "definitionId": "war-cry",
+      "samples": 24,
+      "selectionRate": 0.5,
+      "reachableRate": 0.5,
+      "activationRate": 0.4583333333333333,
+      "stallRate": 0,
+      "meanWinDelta": 0,
+      "winDelta95CI": [
+        0,
+        0
+      ],
+      "meanDamageDelta": -0.5416666666666666,
+      "damageDelta95CI": [
+        -1.603333333333333,
+        0.5199999999999997
+      ],
+      "meanHpDelta": -2.875,
+      "hpDelta95CI": [
+        -5.3618282721314845,
+        -0.3881717278685155
+      ],
+      "name": "War Cry",
+      "tier": "mid",
+      "node": "relay"
+    },
+    {
+      "definitionId": "defend",
+      "samples": 24,
+      "selectionRate": 0.4583333333333333,
+      "reachableRate": 0.4583333333333333,
+      "activationRate": 0.4166666666666667,
+      "stallRate": 0,
+      "meanWinDelta": -0.041666666666666664,
+      "winDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanDamageDelta": 0.375,
+      "damageDelta95CI": [
+        -0.4492653734065878,
+        1.199265373406588
+      ],
+      "meanHpDelta": 0.25,
+      "hpDelta95CI": [
+        -2.2226202143955875,
+        2.7226202143955875
+      ],
+      "name": "Defend",
+      "tier": "low",
+      "node": "relay"
+    },
+    {
+      "definitionId": "crippling-blow",
+      "samples": 24,
+      "selectionRate": 0.7916666666666666,
+      "reachableRate": 0.7916666666666666,
+      "activationRate": 0.7083333333333334,
+      "stallRate": 0,
+      "meanWinDelta": -0.041666666666666664,
+      "winDelta95CI": [
+        -0.12333333333333335,
+        0.04000000000000003
+      ],
+      "meanDamageDelta": -0.7083333333333334,
+      "damageDelta95CI": [
+        -2.0140009767897693,
+        0.5973343101231025
+      ],
+      "meanHpDelta": -3,
+      "hpDelta95CI": [
+        -6.775300352769722,
+        0.775300352769722
+      ],
+      "name": "Crippling Blow",
+      "tier": "mid",
+      "node": "accumulator"
+    },
+    {
+      "definitionId": "pulse-source",
+      "samples": 24,
+      "selectionRate": 1,
+      "reachableRate": 1,
+      "activationRate": 0,
+      "stallRate": 0,
+      "meanWinDelta": -0.375,
+      "winDelta95CI": [
+        -0.6053596746614843,
+        -0.14464032533851565
+      ],
+      "meanDamageDelta": -11.375,
+      "damageDelta95CI": [
+        -16.885744084270186,
+        -5.864255915729815
+      ],
+      "meanHpDelta": -18.625,
+      "hpDelta95CI": [
+        -28.07637604044887,
+        -9.173623959551128
+      ],
+      "name": "Pulse Source",
+      "tier": "connector",
+      "node": "activator"
+    }
+  ]
+}

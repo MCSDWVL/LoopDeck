@@ -115,8 +115,12 @@ test('enemies expand after the opening two-card onboarding encounters', async ()
   run.battleNumber = 5;
   const later = encounterFor(run);
   assert.deepEqual([first.enemyHp, first.enemyStrength, first.enemyPieces, first.enemyDepth], [20, 0, 2, 0]);
-  assert.deepEqual([later.enemyHp, later.enemyStrength, later.enemyPieces, later.enemyDepth], [73, 1, 7, 4]);
-  run.battleNumber = 9;
+  assert.deepEqual([later.enemyHp, later.enemyStrength, later.enemyPieces, later.enemyDepth], [57, 0, 5, 4]);
+  run.battleNumber = 6;
+  assert.equal(encounterFor(run).enemyPieces,5);
+  run.battleNumber = 7;
+  assert.equal(encounterFor(run).enemyPieces,6);
+  run.battleNumber = 17;
   assert.equal(encounterFor(run).enemyPieces, 11);
 });
 

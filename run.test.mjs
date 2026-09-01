@@ -18,9 +18,9 @@ test('a striker run begins with a deliberately connectable strike and defend cha
   assert.equal(availableNodes(run).length, 3);
 });
 
-test('soundtracks are deterministic per run and provide dark modal pitch data', () => {
+test('soundtracks are deterministic per run and provide dark modal chord-voice data', () => {
   assert.equal(createRun('striker', 10).soundtrack, createRun('striker', 10).soundtrack);
-  assert.equal(Object.values(MUSIC_CONFIG.soundtracks).every(preset => preset.scale.length === 7 && preset.pentatonic.length === 5 && preset.progression.length === 4 && preset.tonicHz < 60), true);
+  assert.equal(Object.values(MUSIC_CONFIG.soundtracks).every(preset => preset.scale.length === 7 && preset.voiceSlots.length === 5 && preset.progression.length === 4 && preset.tonicHz < 60), true);
 });
 
 test('offer class and rarity are rolled independently of the card pool', () => {
@@ -49,14 +49,14 @@ test('soundtrack chords only contain consonant simultaneous intervals', () => {
     const intervals=chord.tones.flatMap((tone,index)=>chord.tones.slice(index+1).map(other=>other-tone));
     assert.equal(intervals.every(interval=>[3,4,7].includes(interval)),true);
   }
-  assert.equal(chordForBeat(MUSIC_CONFIG.soundtracks.phrygian,5).transitionAccent,true);
+  assert.equal(MUSIC_CONFIG.soundtracks.phrygian.chords.some(chord=>chord.root===1),false);
 });
 
-test('pentatonic voicing de-duplicates notes and permits five voices', () => {
+test('chord-tone voicing de-duplicates notes and permits five consonant voices', () => {
   const preset=MUSIC_CONFIG.soundtracks.aeolian;
   const voices=allocateChordVoices(preset,1,[{degree:0},{degree:0},{degree:1},{degree:2},{degree:3},{degree:4}]);
   assert.equal(voices.length,5);
-  assert.deepEqual(voices.map(voice=>voice.semitones),[0,3,5,7,10]);
+  assert.deepEqual(voices.map(voice=>voice.semitones),[0,3,7,12,15]);
 });
 
 test('generated card degrees and progression variants are deterministic per run', () => {
@@ -68,17 +68,18 @@ test('generated card degrees and progression variants are deterministic per run'
   assert.ok(new Set(Array.from({length:20},(_,seed)=>createRun('striker',seed).collection[0].degree)).size>1);
 });
 
-test('progression variants alter the chord sequence without reshuffling a run', () => {
+test('progression variants are seeded cyclic rotations of the intended chord sequence', () => {
   const preset=MUSIC_CONFIG.soundtracks.aeolian;
   assert.equal(chordForBeat(preset,1,0).root,0);
   assert.equal(chordForBeat(preset,9,0).root,8);
-  assert.equal(chordForBeat(preset,9,1).root,5);
+  assert.equal(chordForBeat(preset,9,1).root,7);
+  for(const variant of preset.progressionVariants) assert.equal(variant.every((index,position)=>index===(variant[0]+position)%preset.chords.length),true);
 });
 
-test('pentatonic palettes omit semitone and tritone intervals', () => {
-  for(const preset of Object.values(MUSIC_CONFIG.soundtracks)){
-    const intervals=preset.pentatonic.flatMap((tone,index)=>preset.pentatonic.slice(index+1).map(other=>other-tone));
-    assert.equal(intervals.every(interval=>![1,6,11].includes(interval)),true);
+test('normal card degrees resolve to chord tones or octave transpositions', () => {
+  for(const preset of Object.values(MUSIC_CONFIG.soundtracks)) for(let progression=0;progression<preset.progressionVariants.length;progression++) for(let beat=1;beat<=16;beat++){
+    const chord=chordForBeat(preset,beat,progression),voices=allocateChordVoices(preset,beat,preset.voiceSlots.map(degree=>({degree})),5,progression);
+    assert.equal(voices.every(voice=>chord.tones.includes((voice.semitones-chord.root)%12)),true);
   }
 });
 
@@ -106,15 +107,17 @@ test('skipping a reward grants 10 gold without adding a card', () => {
   assert.equal(run.phase, 'map');
 });
 
-test('enemies grow from a two-card low-stat board as battle depth increases', async () => {
+test('enemies expand after the opening two-card onboarding encounters', async () => {
   const { encounterFor } = await import('./run.js');
   const run = createRun('striker', 42);
   run.selectedNode = { kind:'fight' };
   const first = encounterFor(run);
   run.battleNumber = 5;
   const later = encounterFor(run);
-  assert.deepEqual([first.enemyHp, first.enemyStrength, first.enemyPieces], [25, 0, 1]);
-  assert.deepEqual([later.enemyHp, later.enemyStrength, later.enemyPieces], [73, 1, 3]);
+  assert.deepEqual([first.enemyHp, first.enemyStrength, first.enemyPieces, first.enemyDepth], [20, 0, 2, 0]);
+  assert.deepEqual([later.enemyHp, later.enemyStrength, later.enemyPieces, later.enemyDepth], [73, 1, 7, 4]);
+  run.battleNumber = 9;
+  assert.equal(encounterFor(run).enemyPieces, 11);
 });
 
 test('shops refuse unaffordable cards and deduct 25 gold for purchases', () => {
@@ -128,3 +131,4 @@ test('shops refuse unaffordable cards and deduct 25 gold for purchases', () => {
   assert.equal(run.gold, 0);
   assert.equal(run.collection.length, before + 1);
 });
+

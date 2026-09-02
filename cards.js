@@ -20,6 +20,11 @@ export const CARD_DEFINITIONS=[
   ]),
   ...set('enemy-venom',[s('venom','Venom','low','relay',0,action('Venom','Apply 1 poison',[st('enemy','poison',1)],['debuff'])),s('toxic-slash','Toxic Slash','low','relayTurn',1,action('Toxic Slash','Deal 4 damage; apply 1 poison',[d(4),st('enemy','poison',1)],['attack'])),s('infect','Infect','mid','delay',2,action('Infect','Apply 2 poison',[st('enemy','poison',2)],['debuff']),{beats:2}),s('puncture','Puncture','strong','accumulator',3,action('Puncture','Deal 7 damage',[d(7)],['attack']),{threshold:3})])
 ];
+for(const card of CARD_DEFINITIONS){
+  if(['glass-strike','glass-defend'].includes(card.id))card.playerOnly=true;
+  if(card.id==='finisher')card.enemyAccess='miniboss';
+  if(['blood-for-blood','reprisal','no-surrender'].includes(card.id))card.enemyAccess='boss';
+}
 export const catalogFor=archetype=>CARD_DEFINITIONS.filter(card=>card.archetype===archetype||card.archetype==='*');
 export const cardById=id=>CARD_DEFINITIONS.find(card=>card.id===id);
 export function outputCount(tier,random){const weights=PORT_WEIGHTS[tier],roll=random();let sum=0;for(let count=0;count<weights.length;count++){sum+=weights[count];if(roll<sum)return count}return 1}

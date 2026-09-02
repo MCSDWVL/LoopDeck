@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { SimpleForecastPolicy, createTuningConfig, evaluateCardInScenarios, evaluateCatalog, evaluateSeeds, simulateBattle, simulateRun } from './balance.js';
+import { SimpleForecastPolicy, createTuningConfig, evaluateBoss, evaluateCardInScenarios, evaluateCatalog, evaluateSeeds, simulateBattle, simulateRun } from './balance.js';
 import { createRun, encounterFor } from './run.js';
 
 test('headless battles cap an unresolved fight as a stall',()=>{
@@ -22,4 +22,8 @@ test('catalog report ranks concise card summaries from replay states',()=>{
   const config=createTuningConfig({campaignBattles:1,forecastBeats:8,battleBeatCap:30}),policy=new SimpleForecastPolicy(config),runs=[simulateRun(3,policy,config)];
   const report=evaluateCatalog(runs,policy,config,1);
   assert.ok(report.length>40);assert.equal(report[0].rows,undefined);assert.equal(typeof report[0].meanWinDelta,'number');
+});
+test('boss calibration reports deterministic beat-twenty damage metrics',()=>{
+  const config=createTuningConfig({forecastBeats:8,battleBeatCap:40}),policy=new SimpleForecastPolicy(config),report=evaluateBoss('reprisal-conduit',[7,8],policy,config);
+  assert.deepEqual([report.bossId,report.samples],["reprisal-conduit",2]);assert.equal(typeof report.winRate,'number');assert.equal(typeof report.medianDamageByBeat20,'number');
 });

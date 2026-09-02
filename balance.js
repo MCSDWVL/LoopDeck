@@ -1,15 +1,16 @@
 import { CARD_DEFINITIONS, OFFER_CONFIG, PORT_WEIGHTS, cardById, catalogFor } from './cards.js';
 import { advance, createBattle, fieldCard, makeCard, poweredNodes, seeded } from './game.js';
 import { availableNodes, buyCard, chooseReward, createRun, encounterFor, leaveCampfire, leaveShop, resolveVictory, selectNode, skipReward } from './run.js';
+import {BOSS_DEFINITIONS,BOSS_SCHEDULE,bossById} from './bosses.js';
 
 const hashText=text=>{let value=2166136261;for(const char of text)value=Math.imul(value^char.charCodeAt(0),16777619);return (value>>>0).toString(16)};
 const clone=value=>structuredClone(value);
-const encounterOptions=encounter=>({enemyHp:encounter.enemyHp,enemyStrength:encounter.enemyStrength,enemyPieces:encounter.enemyPieces,enemyDepth:encounter.enemyDepth,seed:encounter.seed});
+const encounterOptions=encounter=>({enemyHp:encounter.enemyHp,enemyStrength:encounter.enemyStrength,enemyPieces:encounter.enemyPieces,enemyDepth:encounter.enemyDepth,enemyRank:encounter.enemyRank,bossId:encounter.bossId,seed:encounter.seed});
 
 export function createTuningConfig(overrides={}) {
   const config={version:'balance-v1',campaignBattles:12,forecastBeats:24,battleBeatCap:200,milestones:[4,8,12],lowHpFraction:.4,...overrides};
   // The snapshot makes reports traceable to the authored knobs in cards.js/game.js.
-  config.content={cards:CARD_DEFINITIONS,offerConfig:OFFER_CONFIG,portWeights:PORT_WEIGHTS};
+  config.content={cards:CARD_DEFINITIONS,bosses:BOSS_DEFINITIONS,offerConfig:OFFER_CONFIG,portWeights:PORT_WEIGHTS};
   config.hash=hashText(JSON.stringify(config));
   return config;
 }
@@ -112,6 +113,18 @@ export function evaluateSeeds(seeds,policy=new SimpleForecastPolicy(),config=pol
   const milestones=Object.fromEntries(config.milestones.map(milestone=>{const reached=runs.filter(run=>run.wins>=milestone);return [milestone,{survivalRate:reached.length/runs.length,medianHp:percentile(reached.map(run=>run.battles[milestone-1]?.result.playerHp??0),.5),p25Hp:percentile(reached.map(run=>run.battles[milestone-1]?.result.playerHp??0),.25)}]}));
   const battles=runs.flatMap(run=>run.battles),stalls=battles.filter(entry=>entry.result.stalled).length;
   return {configHash:config.hash,policyVersion:policy.version,runs,milestones,clearRate:runs.filter(run=>run.completed).length/runs.length,meanWins:runs.reduce((sum,run)=>sum+run.wins,0)/runs.length,meanHpLostPerBattle:battles.length?battles.reduce((sum,entry)=>sum+(entry.result.playerMaxHp-entry.result.playerHp),0)/battles.length:0,stallRate:battles.length?stalls/battles.length:0};
+}
+
+export function evaluateBoss(bossId,seeds,policy=new SimpleForecastPolicy(),config=policy.config??createTuningConfig()) {
+  const boss=bossById(bossId),schedule=BOSS_SCHEDULE.find(entry=>entry.bossId===bossId);if(!boss||!schedule)throw new Error(`Unknown scheduled boss: ${bossId}`);
+  const battleNumber=schedule.battle,rows=seeds.map(seed=>{
+    let run=createRun('striker',seed);
+    while(run.battleNumber<battleNumber){run.selectedNode={kind:'fight'};run=resolveVictory(run);const offer=run.offers[(seed+run.battleNumber)%run.offers.length];run=chooseReward(run,offer.id)}
+    run.selectedNode={kind:'boss'};const encounter=encounterFor(run),board=policy.buildBoard(run,encounter),result=simulateBattle(board,encounter,{playerHp:run.hp,playerMaxHp:run.maxHp,beatCap:config.battleBeatCap});
+    let checkpoint=createBattle(clone(board),encounter.enemy,encounter.scale,{playerHp:run.hp,playerMaxHp:run.maxHp,...encounterOptions(encounter)});while(!checkpoint.over&&checkpoint.beat<20)checkpoint=advance(checkpoint);
+    return {result,damageByBeat20:checkpoint.enemy.maxHp-checkpoint.enemy.hp};
+  }),wins=rows.filter(row=>row.result.result==='Victory');
+  return {bossId,name:boss.name,samples:rows.length,winRate:wins.length/(rows.length||1),medianWinningHp:percentile(wins.map(row=>row.result.playerHp),.5),medianBossHpOnLoss:percentile(rows.filter(row=>row.result.result!=='Victory').map(row=>row.result.enemyHp),.5),medianDamageByBeat20:percentile(rows.map(row=>row.damageByBeat20),.5),rows};
 }
 
 export function evaluateCardInScenarios(definitionId,scenarios,policy=new SimpleForecastPolicy(),config=policy.config??createTuningConfig()) {

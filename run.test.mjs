@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRun, availableNodes, selectNode, resolveVictory, chooseReward, skipReward, buyCard, rollOfferDefinition, rewardOffers } from './run.js';
+import { createRun, availableNodes, selectNode, resolveVictory, chooseReward, skipReward, buyCard, rollOfferDefinition, rewardOffers, encounterFor } from './run.js';
 import { MUSIC_CONFIG, soundtrackForSeed, chordForBeat, allocateChordVoices, OFFER_CONFIG } from './cards.js';
 
 test('a striker run begins with a deliberately connectable strike and defend chain', () => {
@@ -92,6 +92,20 @@ test('victory awards gold and one selected reward card', () => {
   run = chooseReward(run, run.offers[0].id);
   assert.equal(run.collection.length, 4);
   assert.equal(run.phase, 'map');
+});
+
+test('battle twelve is replaced by one mandatory boss with its authored rewards', () => {
+  let run=createRun('striker',42);
+  run.battleNumber=11;run.selectedNode={kind:'fight'};
+  run=resolveVictory(run);run=chooseReward(run,run.offers[0].id);
+  const nodes=availableNodes(run);
+  assert.equal(nodes.length,1);
+  assert.equal(nodes[0].kind,'boss');
+  run=selectNode(run,nodes[0].id);
+  const encounter=encounterFor(run);
+  assert.deepEqual([encounter.boss,encounter.bossId,encounter.enemyHp], [true,'reprisal-conduit',160]);
+  run=resolveVictory(run);
+  assert.deepEqual([run.gold,run.offers.length],[40,5]);
 });
 
 test('skipping a reward grants 10 gold without adding a card', () => {

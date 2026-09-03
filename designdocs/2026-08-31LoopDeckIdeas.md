@@ -115,7 +115,7 @@ Incoming damage is incread by N.
 Block generated is reduced/increased by N.
 
 ## Stunned
-Next Pulse Beat does not trigger any action.
+Each stack cancels one action activation, then is removed. Stun does not decay on its own.
 
 # Need to Make Lots of Cards
 
